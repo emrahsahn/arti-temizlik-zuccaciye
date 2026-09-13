@@ -1,0 +1,5 @@
+{
+  "name": "playwright",
+  "description": "Playwright MCP Server for browser testing and automation",
+  "version": "1.0.0"
+}
