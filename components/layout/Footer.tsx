@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-brand-red flex-shrink-0 mt-0.5" />
                 <span>
-                  Saray Mahallesi, İnönü Caddesi No: 45/A, Anamur / Mersin
+                  Sağlık Mahallesi, H.Edip Adıvar Cad. No: 36/B, Anamur / Mersin
                 </span>
               </div>
               <div className="flex items-start gap-2">

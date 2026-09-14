@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/store/authStore";
 import { useCart } from "@/lib/store/cartStore";
-import { Search, ShoppingBag, User, LogOut, Shield, PhoneCall, X } from "lucide-react";
+import { Search, ShoppingBag, User, LogOut, Shield, X } from "lucide-react";
 
 interface HeaderProps {
   searchQuery?: string;
@@ -39,37 +39,6 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200">
-      {/* Top micro bar for phone & location */}
-      <div className="bg-stone-900 text-stone-300 text-[10px] sm:text-[11px] py-1.5 px-3 sm:px-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
-          <div className="flex items-center gap-2 sm:gap-4 truncate">
-            <span className="flex items-center gap-1.5 shrink-0">
-              <PhoneCall className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-brand-red" />
-              <span className="hidden xs:inline">Sipariş:</span>
-              <a
-                href="tel:03248140000"
-                className="text-white font-semibold hover:underline tracking-tight"
-              >
-                0324 814 00 00
-              </a>
-            </span>
-            <span className="hidden md:inline text-stone-500">|</span>
-            <span className="hidden md:inline text-stone-400">
-              Anamur, Bozyazı ve Aydıncık Bölgesi Hızlı Dağıtım
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <Link
-              href="/iletisim"
-              className="text-stone-300 hover:text-white transition-colors underline-offset-2 hover:underline font-medium"
-            >
-              Danışmanlarımız
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* Main navigation bar */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4">
         {/* Logo */}
