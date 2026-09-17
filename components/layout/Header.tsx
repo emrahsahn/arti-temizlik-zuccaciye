@@ -46,9 +46,9 @@ export const Header: React.FC<HeaderProps> = ({
           <Image
             src="/logo.png"
             alt="Artı Temizlik Züccaciye"
-            width={240}
-            height={76}
-            className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+            width={320}
+            height={101}
+            className="h-11 sm:h-12 md:h-14 lg:h-16 w-auto object-contain"
             priority
           />
         </Link>

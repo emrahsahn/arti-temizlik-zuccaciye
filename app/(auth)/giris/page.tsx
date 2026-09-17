@@ -115,9 +115,9 @@ function LoginFormContent() {
             <Image
               src="/logo.png"
               alt="Artı Temizlik Züccaciye"
-              width={260}
-              height={82}
-              className="h-14 w-auto mx-auto object-contain"
+              width={320}
+              height={101}
+              className="h-16 sm:h-20 w-auto mx-auto object-contain"
               priority
             />
           </Link>

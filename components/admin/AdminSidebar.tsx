@@ -51,9 +51,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             <Image
               src="/logo.png"
               alt="Artı Temizlik Züccaciye"
-              width={220}
-              height={70}
-              className="h-8 sm:h-9 w-auto object-contain"
+              width={320}
+              height={101}
+              className="h-10 sm:h-11 w-auto object-contain"
             />
           </Link>
           <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-bold text-brand-red bg-rose-50 px-2 py-0.5 rounded-lg w-fit">

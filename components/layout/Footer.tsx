@@ -13,9 +13,9 @@ export const Footer: React.FC = () => {
             <Image
               src="/logo.png"
               alt="Artı Temizlik Züccaciye"
-              width={240}
-              height={76}
-              className="h-12 w-auto object-contain"
+              width={320}
+              height={101}
+              className="h-14 sm:h-16 w-auto object-contain"
             />
             <p className="text-xs text-stone-500 leading-relaxed">
               Anamur ve çevresinde temizlik kimyasalları, sarf kağıt ürünleri, endüstriyel hijyen ekipmanları ve züccaciye toptan &amp; perakende tedarikçisi.

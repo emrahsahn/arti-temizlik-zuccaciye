@@ -51,9 +51,9 @@ export default function AdminLayout({
             <Image
               src="/logo.png"
               alt="Artı Temizlik"
-              width={160}
-              height={50}
-              className="h-7 w-auto object-contain"
+              width={320}
+              height={101}
+              className="h-9 sm:h-10 w-auto object-contain"
             />
           </Link>
         </div>

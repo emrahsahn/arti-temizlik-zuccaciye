@@ -62,9 +62,9 @@ export default function PanelLayout({
               <Image
                 src="/logo.png"
                 alt="Artı Temizlik Züccaciye"
-                width={220}
-                height={70}
-                className="h-8 sm:h-9 w-auto object-contain"
+                width={320}
+                height={101}
+                className="h-10 sm:h-11 md:h-12 w-auto object-contain"
               />
             </Link>
             <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600 text-xs font-semibold">
