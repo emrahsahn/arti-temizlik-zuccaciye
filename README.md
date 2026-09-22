@@ -6,6 +6,18 @@ Akdeniz bölgesinde (Anamur, Bozyazı, Aydıncık) otel, restoran, kafe, eğitim
 
 ---
 
+## 📐 Sistem & Uygulama Mimarisi
+
+Aşağıdaki mimari diyagramı; platformun B2C kamu vitrini, B2B bayi portalı, yönetim paneli, Next.js 15 App Router çekirdeği, Supabase BaaS ve Playwright E2E test katmanları arasındaki veri ve yetki akışını göstermektedir:
+
+<p align="center">
+  <img src="public/architecture-diagram.png" alt="Artı Temizlik & Züccaciye Sistem Mimarisi" width="100%" />
+</p>
+
+> 💡 **İnteraktif Mimari Görünümü:** Archify ile üretilen bağımsız ve etkileşimli HTML haritasını [`public/architecture.html`](public/architecture.html) dosyası üzerinden tarayıcınızda açıp inceleyebilirsiniz.
+
+---
+
 ## 🌟 Öne Çıkan Özellikler
 
 ### 🏪 1. Kamu Vitrini & Katalog Deneyimi

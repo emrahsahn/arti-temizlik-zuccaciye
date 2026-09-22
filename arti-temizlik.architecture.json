@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Art� Temizlik ve Z�ccaciye � Sistem Mimarisi",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "public-flow",
+        "label": "Kamu Vitrini ve Siparis Akisi",
+        "focus": [
+          "b2c_clients",
+          "public_catalog",
+          "data_service",
+          "postgres_db"
+        ],
+        "note": "Ziyaretcilerin urunleri inceleyip sepete ekleme akisi."
+      },
+      {
+        "id": "b2b-auth-flow",
+        "label": "B2B ve Yonetici Guvenlik Akisi",
+        "focus": [
+          "b2b_clients",
+          "admin_user",
+          "middleware",
+          "b2b_portal",
+          "admin_panel",
+          "supabase_auth"
+        ],
+        "note": "Rol bazli erisim ve guvenli oturum yonetimi."
+      },
+      {
+        "id": "e2e-quality",
+        "label": "Otomasyon ve Test Dogrulama",
+        "focus": [
+          "playwright_suite",
+          "public_catalog",
+          "admin_panel",
+          "data_service"
+        ],
+        "note": "Mobil ve masaustu E2E test kapsami."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "b2c_clients",
+      "type": "external",
+      "label": "B2C Musteriler",
+      "sublabel": "Mobil / Web Vitrin",
+      "pos": [
+        40,
+        110
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "b2b_clients",
+      "type": "external",
+      "label": "B2B Bayiler",
+      "sublabel": "Otel / Kafe / Kurum",
+      "pos": [
+        40,
+        250
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "admin_user",
+      "type": "external",
+      "label": "Yonetici (Admin)",
+      "sublabel": "Saha ve Stok Ekibi",
+      "pos": [
+        40,
+        390
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "middleware",
+      "type": "security",
+      "label": "Next.js Middleware",
+      "sublabel": "Auth ve Rol Korumasi",
+      "pos": [
+        260,
+        250
+      ],
+      "size": [
+        140,
+        62
+      ],
+      "tag": "Next.js 15"
+    },
+    {
+      "id": "public_catalog",
+      "type": "frontend",
+      "label": "Kamu Vitrini (/)",
+      "sublabel": "Katalog ve Marquee",
+      "pos": [
+        480,
+        110
+      ],
+      "size": [
+        150,
+        62
+      ],
+      "tag": "App Router"
+    },
+    {
+      "id": "b2b_portal",
+      "type": "frontend",
+      "label": "Bayi Portali (/panel)",
+      "sublabel": "Ozel Fiyat ve Danisman",
+      "pos": [
+        480,
+        250
+      ],
+      "size": [
+        150,
+        62
+      ],
+      "tag": "App Router"
+    },
+    {
+      "id": "admin_panel",
+      "type": "frontend",
+      "label": "Admin Paneli (/admin)",
+      "sublabel": "Vitrin ve Stok Paneli",
+      "pos": [
+        480,
+        390
+      ],
+      "size": [
+        150,
+        62
+      ],
+      "tag": "App Router"
+    },
+    {
+      "id": "data_service",
+      "type": "backend",
+      "label": "Data Service Store",
+      "sublabel": "Sepet ve Reaktif Bus",
+      "pos": [
+        720,
+        250
+      ],
+      "size": [
+        150,
+        62
+      ],
+      "tag": "TypeScript"
+    },
+    {
+      "id": "supabase_auth",
+      "type": "security",
+      "label": "Supabase Auth",
+      "sublabel": "SSR Session ve JWT",
+      "pos": [
+        960,
+        110
+      ],
+      "size": [
+        140,
+        62
+      ],
+      "tag": "Supabase"
+    },
+    {
+      "id": "postgres_db",
+      "type": "database",
+      "label": "PostgreSQL DB",
+      "sublabel": "Urunler ve Siparisler",
+      "pos": [
+        960,
+        250
+      ],
+      "size": [
+        140,
+        62
+      ],
+      "tag": "Database"
+    },
+    {
+      "id": "storage_cdn",
+      "type": "cloud",
+      "label": "Supabase Storage",
+      "sublabel": "Urun ve Banner Medyasi",
+      "pos": [
+        960,
+        390
+      ],
+      "size": [
+        140,
+        62
+      ],
+      "tag": "Storage"
+    },
+    {
+      "id": "playwright_suite",
+      "type": "backend",
+      "label": "Playwright E2E",
+      "sublabel": "Pixel 7 ve Masaustu Test",
+      "pos": [
+        1180,
+        250
+      ],
+      "size": [
+        140,
+        62
+      ],
+      "tag": "Testing"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "Kullanici ve Cihaz Katmani",
+      "wraps": [
+        "b2c_clients",
+        "b2b_clients",
+        "admin_user"
+      ],
+      "pad": 16
+    },
+    {
+      "kind": "region",
+      "label": "Next.js 15 Full-Stack Platform",
+      "wraps": [
+        "middleware",
+        "public_catalog",
+        "b2b_portal",
+        "admin_panel",
+        "data_service"
+      ],
+      "pad": 18
+    },
+    {
+      "kind": "region",
+      "label": "Supabase BaaS Bulut Altyapisi",
+      "wraps": [
+        "supabase_auth",
+        "postgres_db",
+        "storage_cdn"
+      ],
+      "pad": 18
+    }
+  ],
+  "connections": [
+    {
+      "from": "b2c_clients",
+      "to": "public_catalog",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "from": "b2b_clients",
+      "to": "middleware",
+      "label": "Bayi Girisi",
+      "variant": "emphasis",
+      "labelAt": [
+        215,
+        240
+      ]
+    },
+    {
+      "from": "admin_user",
+      "to": "middleware",
+      "label": "Admin Girisi",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "labelAt": [
+        215,
+        370
+      ]
+    },
+    {
+      "from": "middleware",
+      "to": "b2b_portal",
+      "label": "Bayi Rolu",
+      "variant": "security",
+      "route": "straight"
+    },
+    {
+      "from": "middleware",
+      "to": "admin_panel",
+      "label": "Admin Rolu",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "labelAt": [
+        440,
+        370
+      ]
+    },
+    {
+      "from": "public_catalog",
+      "to": "data_service",
+      "label": "Katalog Sepet",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        600,
+        180
+      ]
+    },
+    {
+      "from": "b2b_portal",
+      "to": "data_service",
+      "label": "Bayi Fiyati",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "admin_panel",
+      "to": "data_service",
+      "label": "Stok Banner",
+      "variant": "emphasis",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        600,
+        340
+      ]
+    },
+    {
+      "from": "data_service",
+      "to": "supabase_auth",
+      "label": "Oturum Dogrulama",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        840,
+        180
+      ]
+    },
+    {
+      "from": "data_service",
+      "to": "postgres_db",
+      "label": "SQL RLS",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "data_service",
+      "to": "storage_cdn",
+      "label": "Medya Depolama",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        840,
+        340
+      ]
+    },
+    {
+      "from": "playwright_suite",
+      "to": "public_catalog",
+      "label": "Vitrin E2E Testi",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "top",
+      "via": [
+        [
+          1250,
+          48
+        ],
+        [
+          555,
+          48
+        ]
+      ]
+    },
+    {
+      "from": "playwright_suite",
+      "to": "admin_panel",
+      "label": "Admin E2E Testi",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "via": [
+        [
+          1250,
+          520
+        ],
+        [
+          555,
+          520
+        ]
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Kullanici ve Deneyim Katmani",
+      "items": [
+        "B2C ziyaretciler icin hizli katalog ve kayan reyonlar",
+        "B2B otel/restoran musterileri icin ozel fiyatlandirma ve danisman hatti",
+        "Yoneticiler icin canli vitrin banner ve siparis yonetim paneli"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Next.js 15 ve Reaktif Mimari",
+      "items": [
+        "App Router ve SSR ile yuksek performansli sayfa yuklemesi",
+        "Middleware ile rol bazli koruma ve yetkilendirme",
+        "Slide-over sepet cekmecesi ve reaktif durum yonetimi"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Supabase BaaS ve Kalite Guvencesi",
+      "items": [
+        "PostgreSQL uzerinde RLS guvenlik kurallari ve veri butunlugu",
+        "Masaustu ve mobil Pixel 7 profillerinde Playwright E2E testleri",
+        "CDN uzerinden optimize edilmis gorsel ve varlik sunumu"
+      ]
+    }
+  ]
+}
