@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Profile } from "../types";
 import { MOCK_PROFILES } from "../mockData";
+import { logLoginSuccess, logLoginFailed, logLogout } from "../vercel-watch-logger";
 
 interface AuthContextType {
   user: Profile | null;
@@ -46,13 +47,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = async (username: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    const cleanUser = username.toLowerCase().trim();
+
     // 1. Check if Supabase credentials are configured
     const hasSupabase = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
 
     if (hasSupabase) {
       // Supabase Auth Integration
       try {
-        const email = `${username.toLowerCase().trim()}@artitemizlik.internal`;
+        const email = `${cleanUser}@artitemizlik.internal`;
         const { createClient } = await import("../supabase/client");
         const supabase = createClient();
         if (supabase) {
@@ -61,6 +64,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             password,
           });
           if (error) {
+            logLoginFailed({
+              username: cleanUser,
+              details: "Hatalı şifre veya kullanıcı adı (Supabase).",
+            });
             return { success: false, error: "Kullanıcı adı veya şifre hatalı." };
           }
           if (data.user) {
@@ -76,6 +83,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(profile));
               document.cookie = `arti_user_role=${profile.role}; path=/; max-age=604800; SameSite=Lax`;
               document.cookie = `arti_user_id=${profile.id}; path=/; max-age=604800; SameSite=Lax`;
+              logLoginSuccess({
+                username: cleanUser,
+                details: `${profile.ad_soyad || profile.firma_adi || cleanUser} (${profile.role}) panele oturum açtı.`,
+              });
               return { success: true };
             }
           }
@@ -86,10 +97,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     // 2. Mock Fallback / Demo Credentials
-    const cleanUser = username.toLowerCase().trim();
     const expectedPassword = DEMO_CREDENTIALS[cleanUser];
 
     if (!expectedPassword || expectedPassword !== password) {
+      logLoginFailed({
+        username: cleanUser,
+        details: "Hatalı şifre veya kullanıcı adı (Demo).",
+      });
       return {
         success: false,
         error: "Kullanıcı adı veya şifre hatalı. Lütfen bilgilerinizi kontrol ediniz.",
@@ -98,6 +112,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const matchedProfile = MOCK_PROFILES.find((p) => p.username === cleanUser);
     if (!matchedProfile) {
+      logLoginFailed({
+        username: cleanUser,
+        details: "Kullanıcı profili bulunamadı.",
+      });
       return { success: false, error: "Kullanıcı profili bulunamadı." };
     }
 
@@ -106,10 +124,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     document.cookie = `arti_user_role=${matchedProfile.role}; path=/; max-age=604800; SameSite=Lax`;
     document.cookie = `arti_user_id=${matchedProfile.id}; path=/; max-age=604800; SameSite=Lax`;
 
+    logLoginSuccess({
+      username: cleanUser,
+      details: `${matchedProfile.ad_soyad || matchedProfile.firma_adi || cleanUser} (${matchedProfile.role}) panele oturum açtı (Demo).`,
+    });
+
     return { success: true };
   };
 
   const logout = () => {
+    if (user?.username) {
+      logLogout({
+        username: user.username,
+        details: `${user.ad_soyad || user.firma_adi || user.username} güvenli bir şekilde oturumu kapattı.`,
+      });
+    }
     setUser(null);
     localStorage.removeItem(USER_STORAGE_KEY);
     document.cookie = "arti_user_role=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";

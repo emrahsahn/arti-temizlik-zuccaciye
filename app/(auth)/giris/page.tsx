@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/store/authStore";
+import { logLoginBlocked } from "@/lib/vercel-watch-logger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, User, AlertCircle, ArrowLeft, ShieldCheck } from "lucide-react";
@@ -52,12 +53,20 @@ function LoginFormContent() {
 
     // 1. Honeypot check
     if (honeypot) {
+      logLoginBlocked({
+        username: username || "bot",
+        details: "Honeypot tuzağı tetiklendi (spam bot şüphesi).",
+      });
       console.warn("Spam bot detected via honeypot field");
       return;
     }
 
     // 2. Lockout check
     if (lockoutTimer > 0) {
+      logLoginBlocked({
+        username: username || "admin",
+        details: `Kilit süresi aktifken erişim denendi (${lockoutTimer} saniye beklemede).`,
+      });
       return;
     }
 
@@ -73,9 +82,17 @@ function LoginFormContent() {
         if (nextAttempts >= 5) {
           setLockoutTimer(30);
           setError("Çok fazla hatalı deneme yapıldı. Lütfen 30 saniye bekleyin.");
+          logLoginBlocked({
+            username: username || "admin",
+            details: "5 kez üst üste hatalı deneme nedeniyle oturum 30 saniye kilitlendi.",
+          });
         } else if (nextAttempts >= 3) {
           setLockoutTimer(5);
           setError("Hatalı giriş. Güvenliğiniz için 5 saniye bekleyin.");
+          logLoginBlocked({
+            username: username || "admin",
+            details: "3 kez üst üste hatalı deneme nedeniyle oturum 5 saniye kilitlendi.",
+          });
         } else {
           setError(res.error || "Kullanıcı adı veya şifre hatalı.");
         }

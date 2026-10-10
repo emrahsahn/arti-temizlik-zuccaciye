@@ -5,6 +5,14 @@ import {
   loginSchema,
 } from "../lib/schemas/order";
 import { DataService } from "../lib/dataService";
+import {
+  extractClientIp,
+  extractUserAgent,
+  logLoginSuccess,
+  logLoginFailed,
+  logLoginBlocked,
+  logLogout,
+} from "../lib/vercel-watch-logger";
 
 console.log("🚀 Running Artı Temizlik Züccaciye Core Self-Checks...\n");
 
@@ -237,4 +245,38 @@ assert.equal(DataService.getContactPersons().length, initialContactsCount);
 
 console.log("   ✅ Contact Persons CRUD & Footer sync checks passed!");
 
-console.log("\n✨ ALL 6 TEST SUITES PASSED FLAWLESSLY! ✨\n");
+// 7. Test VercelWatch Logger SDK
+console.log("\n7. Testing VercelWatch Logger SDK...");
+
+// 7.1 IP Extraction tests
+assert.equal(extractClientIp(null), "127.0.0.1", "Null req should fallback to 127.0.0.1");
+assert.equal(
+  extractClientIp({ headers: { "x-forwarded-for": "203.0.113.195, 70.41.3.18" } }),
+  "203.0.113.195",
+  "Should parse first IP from x-forwarded-for"
+);
+assert.equal(
+  extractClientIp({ headers: { "cf-connecting-ip": "198.51.100.1" } }),
+  "198.51.100.1",
+  "Should parse cf-connecting-ip"
+);
+
+// 7.2 UserAgent Extraction tests
+assert.equal(
+  extractUserAgent({ headers: { "user-agent": "Mozilla/5.0 TestBot/1.0" } }),
+  "Mozilla/5.0 TestBot/1.0",
+  "Should parse user-agent header"
+);
+
+// 7.3 Logging helper functions callable
+assert.doesNotThrow(() => {
+  logLoginSuccess({ username: "testadmin", details: "Self-check test" });
+  logLoginFailed({ username: "baduser", details: "Self-check failure" });
+  logLoginBlocked({ username: "spambot", details: "Self-check block" });
+  logLogout({ username: "testadmin", details: "Self-check logout" });
+}, "Logger helper methods should run safely without throwing");
+
+console.log("   ✅ VercelWatch Logger SDK checks passed!");
+
+console.log("\n✨ ALL 7 TEST SUITES PASSED FLAWLESSLY! ✨\n");
+
