@@ -103,3 +103,18 @@ export interface CartItem {
   adet: number;
   not?: string;
 }
+
+export interface MusteriMemnuniyeti {
+  id: string;
+  baslik: string;
+  musteri_adi: string;
+  firma_veya_bolge?: string;
+  tip: "fotograf" | "video";
+  medya_url: string;
+  kapak_url?: string;
+  yorum?: string;
+  yildiz?: number;
+  sira: number;
+  aktif: boolean;
+  tarih?: string;
+}

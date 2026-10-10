@@ -17,6 +17,7 @@ import {
   LogOut,
   ExternalLink,
   ShieldCheck,
+  HeartHandshake,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -38,6 +39,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { href: "/admin/urunler", label: "Ürün Kataloğu & Fiyat", icon: Package },
     { href: "/admin/kategoriler", label: "Kategori Yönetimi", icon: FolderTree },
     { href: "/admin/vitrin", label: "Vitrin & Kampanyalar", icon: Layers },
+    { href: "/admin/memnuniyet", label: "Müşteri Memnuniyeti", icon: HeartHandshake },
     { href: "/admin/danismanlar", label: "Danışmanlar & İletişim", icon: UserCheck },
     { href: "/admin/kullanicilar", label: "Müşteri / Bayi Hesapları", icon: Users },
   ];

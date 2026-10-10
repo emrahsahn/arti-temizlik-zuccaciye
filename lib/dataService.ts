@@ -7,6 +7,7 @@ import {
   MOCK_SIPARISLER,
   MOCK_AYARLAR,
   MOCK_PROFILES,
+  MOCK_MEMNUNIYETLER,
 } from "./mockData";
 import {
   Kategori,
@@ -18,6 +19,7 @@ import {
   SiteAyarlari,
   Profile,
   SiparisDurumu,
+  MusteriMemnuniyeti,
 } from "./types";
 
 const PRODUCTS_KEY = "arti_products";
@@ -28,6 +30,7 @@ const PROFILES_KEY = "arti_profiles";
 const CONSULTANTS_KEY = "arti_consultants";
 const CONTACTS_KEY = "arti_contacts";
 const CAMPAIGNS_KEY = "arti_campaigns";
+const REVIEWS_KEY = "arti_customer_reviews";
 
 let memoryCategories: Kategori[] = [...MOCK_KATEGORILER];
 let memoryProducts: Urun[] = [...MOCK_URUNLER];
@@ -37,6 +40,7 @@ let memoryProfiles: Profile[] = [...MOCK_PROFILES];
 let memoryConsultants: Danisman[] = [...MOCK_DANISMANLAR];
 let memoryContacts: IletisimKisi[] = [...MOCK_ILETISIM_KISILERI];
 let memoryCampaigns: Kampanya[] = [...MOCK_KAMPANYALAR];
+let memoryReviews: MusteriMemnuniyeti[] = [...MOCK_MEMNUNIYETLER];
 
 function isBrowser(): boolean {
   return typeof window !== "undefined";
@@ -246,6 +250,29 @@ export function saveCampaigns(campaigns: Kampanya[]) {
   try {
     localStorage.setItem(CAMPAIGNS_KEY, JSON.stringify(campaigns));
     window.dispatchEvent(new Event("arti_campaigns_updated"));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function getStoredReviews(): MusteriMemnuniyeti[] {
+  if (isBrowser()) {
+    try {
+      const saved = localStorage.getItem(REVIEWS_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  return memoryReviews;
+}
+
+export function saveReviews(reviews: MusteriMemnuniyeti[]) {
+  memoryReviews = reviews;
+  if (!isBrowser()) return;
+  try {
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+    window.dispatchEvent(new Event("arti_reviews_updated"));
   } catch (e) {
     console.error(e);
   }
@@ -728,5 +755,54 @@ export const DataService = {
     const updated = [...profiles, newProfile];
     saveProfiles(updated);
     return newProfile;
+  },
+
+  getReviews(includeInactive = false): MusteriMemnuniyeti[] {
+    const list = getStoredReviews().sort((a, b) => (a.sira ?? 0) - (b.sira ?? 0));
+    if (includeInactive) return list;
+    return list.filter((r) => r.aktif !== false);
+  },
+
+  getReviewById(id: string): MusteriMemnuniyeti | undefined {
+    return getStoredReviews().find((r) => r.id === id);
+  },
+
+  createReview(data: Omit<MusteriMemnuniyeti, "id">): MusteriMemnuniyeti {
+    const reviews = getStoredReviews();
+    const newRev: MusteriMemnuniyeti = {
+      ...data,
+      id: `mem-${Date.now()}`,
+      sira: data.sira || reviews.length + 1,
+      aktif: data.aktif !== false,
+      tarih: data.tarih || new Date().toISOString().split("T")[0],
+    };
+    const updated = [...reviews, newRev];
+    saveReviews(updated);
+    return newRev;
+  },
+
+  updateReview(id: string, updates: Partial<MusteriMemnuniyeti>): MusteriMemnuniyeti | null {
+    const reviews = getStoredReviews();
+    const index = reviews.findIndex((r) => r.id === id);
+    if (index === -1) return null;
+    reviews[index] = { ...reviews[index], ...updates };
+    saveReviews(reviews);
+    return reviews[index];
+  },
+
+  deleteReview(id: string): boolean {
+    const reviews = getStoredReviews();
+    const updated = reviews.filter((r) => r.id !== id);
+    saveReviews(updated);
+    return true;
+  },
+
+  toggleReviewActive(id: string): boolean {
+    const reviews = getStoredReviews();
+    const index = reviews.findIndex((r) => r.id === id);
+    if (index === -1) return false;
+    reviews[index].aktif = !reviews[index].aktif;
+    saveReviews(reviews);
+    return true;
   },
 };

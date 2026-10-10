@@ -7,6 +7,7 @@ import {
   Siparis,
   SiteAyarlari,
   Profile,
+  MusteriMemnuniyeti,
 } from "./types";
 
 export const MOCK_DANISMANLAR: Danisman[] = [
@@ -418,5 +419,48 @@ export const MOCK_SIPARISLER: Siparis[] = [
         urun: MOCK_URUNLER[10],
       },
     ],
+  },
+];
+
+export const MOCK_MEMNUNIYETLER: MusteriMemnuniyeti[] = [
+  {
+    id: "mem-1",
+    baslik: "Anamur Resort Otel - Sezonluk Temizlik Kimyasalları Sevkiyatımız",
+    musteri_adi: "Kemal Bey",
+    firma_veya_bolge: "Anamur Resort Otel / İskele",
+    tip: "fotograf",
+    medya_url: "https://images.unsplash.com/photo-1584813470613-5b1c1cad3d69?w=800&auto=format&fit=crop&q=80",
+    yorum: "Artı Temizlik ile 3 yıldır aralıksız çalışıyoruz. Otelimizin tüm endüstriyel deterjan ve havlu sarfiyatını aynı gün kapımıza kadar eksiksiz teslim ettiler. Mustafa Bey ve ekibine teşekkür ederiz.",
+    yildiz: 5,
+    sira: 1,
+    aktif: true,
+    tarih: "2025-05-18",
+  },
+  {
+    id: "mem-2",
+    baslik: "Bozyazı Sahil Kafe - Züccaciye ve Bardak Takımları Kurulumu",
+    musteri_adi: "Mehmet K.",
+    firma_veya_bolge: "Yakamoz Kafe & Bistro / Bozyazı",
+    tip: "video",
+    medya_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    kapak_url: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=800&auto=format&fit=crop&q=80",
+    yorum: "Açılışımıza saatler kala acil ihtiyaç duyduğumuz çay bardakları ve paslanmaz servis gereçlerini 2 saat içinde dükkanımıza getirdiler. Gerçek bir çözüm ortağı!",
+    yildiz: 5,
+    sira: 2,
+    aktif: true,
+    tarih: "2025-05-14",
+  },
+  {
+    id: "mem-3",
+    baslik: "Akdeniz Market - Toptan Kağıt ve Poşet Sevkiyatı",
+    musteri_adi: "Hüseyin Akdeniz",
+    firma_veya_bolge: "Akdeniz Süpermarket / Çarşı",
+    tip: "fotograf",
+    medya_url: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80",
+    yorum: "Kendi araçlarıyla yerinde teslimat yapmaları bizim için büyük kolaylık. Fiyatlar Anamur piyasasına göre gayet makul, ürün kalitesi ise birinci sınıf.",
+    yildiz: 5,
+    sira: 3,
+    aktif: true,
+    tarih: "2025-05-02",
   },
 ];

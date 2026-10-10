@@ -7,6 +7,7 @@ import { ShowcaseBanners } from "@/components/catalog/ShowcaseBanners";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { BestsellersMarquee } from "@/components/catalog/BestsellersMarquee";
 import { ProductMarquee } from "@/components/catalog/ProductMarquee";
+import { CustomerReviewsSection } from "@/components/catalog/CustomerReviewsSection";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Footer } from "@/components/layout/Footer";
 import { DataService } from "@/lib/dataService";
@@ -15,8 +16,9 @@ import {
   MOCK_URUNLER,
   MOCK_AYARLAR,
   MOCK_KAMPANYALAR,
+  MOCK_MEMNUNIYETLER,
 } from "@/lib/mockData";
-import { Kategori, Urun, SiteAyarlari, Kampanya } from "@/lib/types";
+import { Kategori, Urun, SiteAyarlari, Kampanya, MusteriMemnuniyeti } from "@/lib/types";
 import {
   Sparkles,
   Package,
@@ -27,6 +29,7 @@ import {
   UtensilsCrossed,
   Droplets,
   FolderOpen,
+  HeartHandshake,
 } from "lucide-react";
 
 function getCategoryIcon(slug: string, iconName?: string) {
@@ -68,6 +71,9 @@ export default function HomePage() {
   const [campaigns, setCampaigns] = useState<Kampanya[]>(() =>
     MOCK_KAMPANYALAR.filter((k) => k.aktif)
   );
+  const [reviews, setReviews] = useState<MusteriMemnuniyeti[]>(() =>
+    MOCK_MEMNUNIYETLER.filter((r) => r.aktif !== false)
+  );
 
   // Sync client-side localStorage modifications after hydration
   useEffect(() => {
@@ -76,6 +82,7 @@ export default function HomePage() {
       setAllProducts(DataService.getProducts());
       setSettings(DataService.getSettings());
       setCampaigns(DataService.getCampaigns());
+      setReviews(DataService.getReviews());
     };
     syncData();
 
@@ -83,6 +90,7 @@ export default function HomePage() {
     window.addEventListener("arti_products_updated", syncData);
     window.addEventListener("arti_settings_updated", syncData);
     window.addEventListener("arti_campaigns_updated", syncData);
+    window.addEventListener("arti_reviews_updated", syncData);
     window.addEventListener("storage", syncData);
 
     return () => {
@@ -90,6 +98,7 @@ export default function HomePage() {
       window.removeEventListener("arti_products_updated", syncData);
       window.removeEventListener("arti_settings_updated", syncData);
       window.removeEventListener("arti_campaigns_updated", syncData);
+      window.removeEventListener("arti_reviews_updated", syncData);
       window.removeEventListener("storage", syncData);
     };
   }, []);
@@ -153,7 +162,7 @@ export default function HomePage() {
       />
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 w-full pb-16">
-        {/* If user is NOT searching and NO category is selected, show animated marquees */}
+        {/* If user is NOT searching and NO category is selected, show animated marquees and customer satisfaction section */}
         {!searchQuery && !selectedCategoryId ? (
           <div className="space-y-6 my-6">
             {/* Top Marketing Banners */}
@@ -181,7 +190,45 @@ export default function HomePage() {
                 viewAllText="Tüm İçerikleri Göster"
               />
             ))}
+
+            {/* Customer Satisfaction & Delivery Reviews Section */}
+            {reviews.length > 0 && (
+              <CustomerReviewsSection reviews={reviews} />
+            )}
           </div>
+        ) : selectedCategoryId === "reviews" ? (
+          /* Dedicated Customer Satisfaction View when "⭐ Müşteri Memnuniyeti" tab is clicked */
+          <section className="mt-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-3 border-b border-stone-200">
+              <div>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight flex items-center gap-2">
+                  <HeartHandshake className="w-6 h-6 text-brand-red" />
+                  <span>Müşteri Memnuniyeti &amp; Teslimat Hikayeleri</span>
+                </h2>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Toplam <span className="font-bold text-stone-800">{reviews.length}</span> sevkiyat ve müşteri geri bildirimi
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setSelectedCategoryId(null);
+                  setSearchQuery("");
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-lg transition-colors w-fit"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Vitrin Görünümüne Dön</span>
+              </button>
+            </div>
+
+            <CustomerReviewsSection
+              reviews={reviews}
+              showViewAll={false}
+              title="Tüm Sevkiyat ve Müşteri Paylaşımları"
+              subtitle="Mersin ve Akdeniz bölgesinde yüzlerce kurumsal işletme ve hane tedariğimiz"
+            />
+          </section>
         ) : (
           /* Filtered Grid Catalog Section (When searching or a category tab is clicked) */
           <section className="mt-8">

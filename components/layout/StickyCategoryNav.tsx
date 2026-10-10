@@ -48,7 +48,11 @@ export const StickyCategoryNav: React.FC<StickyCategoryNavProps> = ({
           <button
             onClick={(e) => {
               onSelectCategory(null);
-              (e.currentTarget as HTMLElement).scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+              (e.currentTarget as HTMLElement).scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+                block: "nearest",
+              });
             }}
             className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95 ${
               selectedCategoryId === null
@@ -68,7 +72,11 @@ export const StickyCategoryNav: React.FC<StickyCategoryNavProps> = ({
                 key={cat.id}
                 onClick={(e) => {
                   onSelectCategory(cat.id);
-                  (e.currentTarget as HTMLElement).scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+                  (e.currentTarget as HTMLElement).scrollIntoView({
+                    behavior: "smooth",
+                    inline: "center",
+                    block: "nearest",
+                  });
                 }}
                 className={`flex-shrink-0 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all active:scale-95 whitespace-nowrap ${
                   isSelected
@@ -90,6 +98,24 @@ export const StickyCategoryNav: React.FC<StickyCategoryNavProps> = ({
         >
           <ChevronRight className="w-4 h-4" />
         </button>
+
+        {/* Fixed Dedicated Customer Satisfaction Button */}
+        <div className="flex-shrink-0 pl-1 sm:pl-2 border-l border-stone-200/80">
+          <button
+            onClick={() => onSelectCategory("reviews")}
+            className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-sm active:scale-95 whitespace-nowrap ${
+              selectedCategoryId === "reviews"
+                ? "bg-gradient-to-r from-brand-red to-rose-600 text-white shadow-rose-200 ring-2 ring-brand-red/30"
+                : "bg-gradient-to-r from-rose-50 to-amber-50 text-brand-red hover:from-rose-100 hover:to-amber-100 border border-rose-200/90 hover:shadow"
+            }`}
+          >
+            <span className="hidden sm:inline font-bold">Müşteri Memnuniyeti</span>
+            <span className="sm:hidden font-bold">Memnuniyet</span>
+            <span className="hidden md:inline-block px-1.5 py-0.5 rounded text-[10px] bg-white/90 text-brand-red border border-rose-200/60 ml-0.5 font-bold">
+              Video &amp; Foto
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   );
